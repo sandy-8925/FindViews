@@ -9,7 +9,6 @@ import com.intellij.openapi.ui.MessageType;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.kotlin.idea.internal.Location;
 import org.jetbrains.kotlin.psi.KtClass;
 import org.jetbrains.kotlin.psi.KtFile;
 

@@ -21,22 +21,19 @@ public class MergeViewAction extends AnAction {
             PsiFile layoutFile = Utils.getFileFromCaret(psiFile, editor);
             List<ResBean> resBeans = Utils.getResBeanFromFile(psiFile, editor);
             MergeDialog dialog = new MergeDialog(resBeans);
-            dialog.setClickListener(new OnMergeClickListener() {
-                @Override
-                public void onOk(boolean kotlin) {
-                    BaseViewCreateFactory factory;
-                    if (kotlin) {
-                        KtClass ktClass = Utils.getPsiClassFromEvent(editor);
-                        factory = new KtViewMergeFactory(resBeans, psiFile, layoutFile, ktClass);
-                    } else {
-                        PsiClass psiClass = Utils.getTargetClass(editor, psiFile);
-                        factory = new JavaViewMergeFactory(resBeans, psiFile, layoutFile,psiClass);
-                    }
-                    if (resBeans.isEmpty()) {
-                        Utils.showNotification(psiFile.getProject(), MessageType.WARNING, "No layout found or No IDs found in layout");
-                    } else {
-                        factory.execute();
-                    }
+            dialog.setClickListener(kotlin -> {
+                BaseViewCreateFactory factory;
+                if (kotlin) {
+                    KtClass ktClass = Utils.getPsiClassFromEvent(editor);
+                    factory = new KtViewMergeFactory(resBeans, psiFile, layoutFile, ktClass);
+                } else {
+                    PsiClass psiClass = Utils.getTargetClass(editor, psiFile);
+                    factory = new JavaViewMergeFactory(resBeans, psiFile, layoutFile,psiClass);
+                }
+                if (resBeans.isEmpty()) {
+                    Utils.showNotification(psiFile.getProject(), MessageType.WARNING, "No layout found or No IDs found in layout");
+                } else {
+                    factory.execute();
                 }
             });
             dialog.pack();

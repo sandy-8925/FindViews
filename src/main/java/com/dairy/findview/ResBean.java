@@ -1,5 +1,8 @@
 package com.dairy.findview;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,12 +66,8 @@ public class ResBean {
         if (nameType == 3) {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < names.length; i++) {
-                if (i == 0) {
-                    sb.append("m");
-                }
-                String word = names[i];
-                sb.append(word.substring(0, 1).toUpperCase())
-                        .append(word.substring(1).toLowerCase());
+                if (i == 0) sb.append("m");
+                sb.append(StringUtils.capitalize(names[i]));
             }
             fieldName = sb.toString();
         } else if (nameType == 2) {

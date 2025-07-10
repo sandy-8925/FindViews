@@ -74,12 +74,8 @@ public class ResBean {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < names.length; i++) {
                 String word = names[i];
-                if (i == 0) {
-                    sb.append(word);
-                } else {
-                    sb.append(word.substring(0, 1).toUpperCase())
-                            .append(word.substring(1).toLowerCase());
-                }
+                if (i == 0) sb.append(word);
+                else sb.append(StringUtils.capitalize(word));
             }
             fieldName = sb.toString();
         }

@@ -18,7 +18,7 @@ class ResBean(name: String, id: String?) {
         if (matcher.find() && matcher.groupCount() > 1) {
             this.id = matcher.group(2)
             val group = matcher.group(1)
-            isSystem = !(group == null || group.length == 0)
+            isSystem = !(group == null || group.isEmpty())
         }
         requireNotNull(this.id) { "Invalid format of view id" }
         val packages = name.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()

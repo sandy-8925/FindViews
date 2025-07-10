@@ -6,7 +6,7 @@ import java.util.List;
  * Created by admin on 2019/8/9.
  */
 public class CodeConstant {
-    public static final String JAVA_FILED = "%s %s %s;";
+    public static final String JAVA_FIELD = "%s %s %s;";
     public static final String JAVA_VARIABLE_STATEMENT = "%s = %sfindViewById(%s);";
 
     public static final String KOTLIN_PROPERTY = "%s lateinit var %s: %s";
@@ -18,12 +18,12 @@ public class CodeConstant {
 
     public static final String BUTTER_KNIFE_ANNOTATION = "@BindView(%s) %s";
 
-    public static String getJavaButterKnifeFiled(String name, String fieldName, String fullId) {
-        return String.format(BUTTER_KNIFE_ANNOTATION, fullId, getJavaFiled(name, fieldName));
+    public static String getJavaButterKnifeField(String name, String fieldName, String fullId) {
+        return String.format(BUTTER_KNIFE_ANNOTATION, fullId, getJavaField(name, fieldName));
     }
 
-    public static String getAdapterJavaButterKnifeFiled(String name, String fieldName, String fullId) {
-        return String.format(BUTTER_KNIFE_ANNOTATION, fullId, getAdapterJavaFiled(name, fieldName));
+    public static String getAdapterJavaButterKnifeField(String name, String fieldName, String fullId) {
+        return String.format(BUTTER_KNIFE_ANNOTATION, fullId, getAdapterJavaField(name, fieldName));
     }
 
     public static String getKotlinButterKnifeProperty(String name, String fieldName, String fullId) {
@@ -34,12 +34,12 @@ public class CodeConstant {
         return String.format(BUTTER_KNIFE_ANNOTATION, fullId, getAdapterKotlinProperty(name, fieldName));
     }
 
-    public static String getJavaFiled(String name, String fieldName) {
-        return String.format(JAVA_FILED, Config.get().getJavaModifier(), name, fieldName);
+    public static String getJavaField(String name, String fieldName) {
+        return String.format(JAVA_FIELD, Config.get().getJavaModifier(), name, fieldName);
     }
 
-    public static String getAdapterJavaFiled(String name, String fieldName) {
-        return String.format(JAVA_FILED, "", name, fieldName).substring(1);
+    public static String getAdapterJavaField(String name, String fieldName) {
+        return String.format(JAVA_FIELD, "", name, fieldName).substring(1);
     }
 
     public static String getJavaStatement(String fieldName, String view, String fullId) {

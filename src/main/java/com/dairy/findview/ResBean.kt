@@ -57,21 +57,19 @@ class ResBean(name: String, id: String?) {
         get() = getFullId(false)
 
     private fun getFullId(isR2: Boolean): String {
-        if (isSystem) {
-            return "android.R.id.$id"
-        }
+        if (isSystem) return "android.R.id.$id"
         return (if (isR2) "R2.id." else "R.id.") + this.id
     }
 
     val javaButterKnifeFiled: String
-        get() = CodeConstant.getJavaButterKnifeFiled(
+        get() = CodeConstant.getJavaButterKnifeField(
             name,
             fieldName,
             getFullId(Config.get().isButterKnifeR2)
         )
 
     val adapterJavaButterKnifeFiled: String
-        get() = CodeConstant.getAdapterJavaButterKnifeFiled(
+        get() = CodeConstant.getAdapterJavaButterKnifeField(
             name,
             fieldName,
             getFullId(Config.get().isButterKnifeR2)
@@ -92,10 +90,10 @@ class ResBean(name: String, id: String?) {
         )
 
     val javaFiled: String
-        get() = CodeConstant.getJavaFiled(name, fieldName)
+        get() = CodeConstant.getJavaField(name, fieldName)
 
     val adapterJavaFiled: String
-        get() = CodeConstant.getAdapterJavaFiled(name, fieldName)
+        get() = CodeConstant.getAdapterJavaField(name, fieldName)
 
     fun getJavaStatement(view: String?): String {
         return CodeConstant.getJavaStatement(fieldName, view, fullId)

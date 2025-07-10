@@ -37,7 +37,7 @@ public class JavaViewMergeFactory extends JavaViewCreateFactory {
             String binding = Utils.getViewBinding(layoutFile);
             StringBuilder holderMethod = new StringBuilder();
             StringBuilder holderField = new StringBuilder();
-            holderField.append(CodeConstant.getAdapterJavaFiled(binding, "mBinding"));
+            holderField.append(CodeConstant.getAdapterJavaField(binding, "mBinding"));
             PsiMethod findMethod = null;
             PsiCodeBlock methodBody = null;
 
@@ -99,7 +99,7 @@ public class JavaViewMergeFactory extends JavaViewCreateFactory {
                 changeHolderModifier(holderClass);
                 PsiElementFactory holderFactory = JavaPsiFacade.getElementFactory(holderClass.getProject());
                 if (holderClass.findFieldByName("mBinding", false) == null) {
-                    holderClass.add(holderFactory.createFieldFromText(CodeConstant.getAdapterJavaFiled(binding, "mBinding"), holderClass));
+                    holderClass.add(holderFactory.createFieldFromText(CodeConstant.getAdapterJavaField(binding, "mBinding"), holderClass));
                 }
                 holderClass.add(holderFactory.createMethodFromText(holderMethod.toString(), holderClass));
             }

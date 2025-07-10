@@ -110,7 +110,7 @@ public class CodeConstant {
         sb.append("    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){\n");
         if (Config.get().isButterKnife()) {
             for (ResBean bean : resBeans) {
-                if (bean.isChecked()) {
+                if (bean.isChecked) {
                     sb.append("        ").append(Config.get().isButterKnifeBind() ? bean.getAdapterKotlinButterKnifeProperty() : bean.getAdapterKotlinProperty()).append("\n");
                 }
             }
@@ -119,7 +119,7 @@ public class CodeConstant {
                     "        }\n");
         } else {
             for (ResBean bean : resBeans) {
-                if (bean.isChecked()) {
+                if (bean.isChecked) {
                     sb.append("        ").append(bean.getKotlinAdapterProperty("itemView")).append("\n");
                 }
             }
@@ -157,7 +157,7 @@ public class CodeConstant {
 
         sb.append("    class ViewHolder extends RecyclerView.ViewHolder {\n");
         for (ResBean bean : resBeans) {
-            if (bean.isChecked()) {
+            if (bean.isChecked) {
                 sb.append("        ").append(Config.get().isButterKnife() ? bean.getAdapterJavaButterKnifeFiled() : bean.getAdapterJavaFiled()).append("\n");
             }
         }
@@ -168,7 +168,7 @@ public class CodeConstant {
             sb.append("            ButterKnife.bind(this, itemView);\n");
         } else {
             for (ResBean bean : resBeans) {
-                if (bean.isChecked()) {
+                if (bean.isChecked) {
                     sb.append("            ").append("this.").append(bean.getJavaStatement("itemView")).append("\n");
                 }
             }

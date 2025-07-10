@@ -61,7 +61,7 @@ public class JavaViewCreateFactory extends BaseJavaViewCreateFactory {
     protected void generateFields() {
         try {
             for (ResBean resBean : resBeans) {
-                if (psiClass.findFieldByName(resBean.getFieldName(), false) == null && resBean.isChecked()) {
+                if (psiClass.findFieldByName(resBean.getFieldName(), false) == null && resBean.isChecked) {
                     PsiField field = factory.createFieldFromText(resBean.getJavaFiled(), psiClass);
                     psiClass.add(field);
                 }
@@ -82,7 +82,7 @@ public class JavaViewCreateFactory extends BaseJavaViewCreateFactory {
             PsiClass holderClass = getAdapterHolder(recycler);
             StringBuilder holderField = new StringBuilder();
             for (ResBean resBean : resBeans) {
-                if (resBean.isChecked()) {
+                if (resBean.isChecked) {
                     holderField.append(resBean.getAdapterJavaFiled())
                             .append("\n");
                 }
@@ -110,7 +110,7 @@ public class JavaViewCreateFactory extends BaseJavaViewCreateFactory {
                 holderMethod.append("super(itemView);\n");
             }
             for (ResBean resBean : resBeans) {
-                if (resBean.isChecked()) {
+                if (resBean.isChecked) {
                     String findId = "findViewById(" + resBean.getFullId() + ");";
                     if (methodBody == null || !methodBody.getText().contains(findId)) {
                         holderMethod.append("this.")
@@ -151,7 +151,7 @@ public class JavaViewCreateFactory extends BaseJavaViewCreateFactory {
                 }
                 PsiElementFactory holderFactory = JavaPsiFacade.getElementFactory(holderClass.getProject());
                 for (ResBean resBean : resBeans) {
-                    if (holderClass.findFieldByName(resBean.getFieldName(), false) == null && resBean.isChecked()) {
+                    if (holderClass.findFieldByName(resBean.getFieldName(), false) == null && resBean.isChecked) {
                         PsiField field = holderFactory.createFieldFromText(resBean.getAdapterJavaFiled(), holderClass);
                         holderClass.add(field);
                     }
@@ -190,7 +190,7 @@ public class JavaViewCreateFactory extends BaseJavaViewCreateFactory {
             String view = mIsActivity ? "" : "view";
             for (ResBean resBean : resBeans) {
                 String findId = "findViewById(" + resBean.getFullId() + ");";
-                if (resBean.isChecked() && methodBody != null && !methodBody.getText().contains(findId)) {
+                if (resBean.isChecked && methodBody != null && !methodBody.getText().contains(findId)) {
                     block.append(resBean.getJavaStatement(view));
                 }
             }

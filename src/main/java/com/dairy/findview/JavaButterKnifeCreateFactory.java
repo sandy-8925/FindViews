@@ -17,7 +17,7 @@ public class JavaButterKnifeCreateFactory extends JavaViewCreateFactory {
     protected void generateFields() {
         try {
             for (ResBean resBean : resBeans) {
-                if (psiClass.findFieldByName(resBean.getFieldName(), false) == null && resBean.isChecked()) {
+                if (psiClass.findFieldByName(resBean.getFieldName(), false) == null && resBean.isChecked) {
                     PsiField field = factory.createFieldFromText(resBean.getJavaButterKnifeFiled(), psiClass);
                     psiClass.add(field);
                 }
@@ -39,7 +39,7 @@ public class JavaButterKnifeCreateFactory extends JavaViewCreateFactory {
             PsiClass holderClass = getAdapterHolder(recycler);
             StringBuilder holderField = new StringBuilder();
             for (ResBean resBean : resBeans) {
-                if (resBean.isChecked()) {
+                if (resBean.isChecked) {
                     holderField.append(resBean.getAdapterJavaButterKnifeFiled())
                             .append("\n");
                 }
@@ -95,7 +95,7 @@ public class JavaButterKnifeCreateFactory extends JavaViewCreateFactory {
                 }
                 PsiElementFactory holderFactory = JavaPsiFacade.getElementFactory(holderClass.getProject());
                 for (ResBean resBean : resBeans) {
-                    if (holderClass.findFieldByName(resBean.getFieldName(), false) == null && resBean.isChecked()) {
+                    if (holderClass.findFieldByName(resBean.getFieldName(), false) == null && resBean.isChecked) {
                         PsiField field = holderFactory.createFieldFromText(resBean.getAdapterJavaButterKnifeFiled(), holderClass);
                         holderClass.add(field);
                     }

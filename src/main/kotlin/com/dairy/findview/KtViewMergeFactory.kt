@@ -16,6 +16,7 @@ class KtViewMergeFactory(
 ) : KtViewCreateFactory(resIdBeans, files, ktClass) {
 
     private val propertyMap = HashMap<String, String>()
+
     override fun executeBefore() {
         resBeans.forEach {
             propertyMap[it.fieldName] = it.getFieldName(2)

@@ -45,11 +45,11 @@ public class TableModelProxy extends AbstractTableModel {
         ResBean bean = datas.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return bean.isChecked();
+                return bean.isChecked;
             case 1:
-                return bean.getName();
+                return bean.name;
             case 2:
-                return bean.getId();
+                return bean.id;
             case 3:
                 return bean.getFieldName();
         }
@@ -60,7 +60,7 @@ public class TableModelProxy extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         ResBean bean = datas.get(rowIndex);
         if (columnIndex == 0 && aValue instanceof Boolean) {
-            bean.setChecked((Boolean) aValue);
+            bean.isChecked = (Boolean) aValue;
         }
         onCheckedChange();
     }

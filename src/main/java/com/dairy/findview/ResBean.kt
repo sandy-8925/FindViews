@@ -42,19 +42,12 @@ class ResBean(name: String, id: String?) {
         var fieldName = id
         val names = id.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         if (nameType == 3) {
-            val sb = StringBuilder()
-            for (i in names.indices) {
-                if (i == 0) sb.append("m")
-                sb.append(StringUtils.capitalize(names[i]))
-            }
+            val sb = StringBuilder("m")
+            names.forEach { sb.append(StringUtils.capitalize(it)) }
             fieldName = sb.toString()
         } else if (nameType == 2) {
             val sb = StringBuilder()
-            for (i in names.indices) {
-                val word = names[i]
-                if (i == 0) sb.append(word)
-                else sb.append(StringUtils.capitalize(word))
-            }
+            names.forEachIndexed { index, s -> if(index == 0) sb.append(s) else sb.append(StringUtils.capitalize(s)) }
             fieldName = sb.toString()
         }
         return fieldName

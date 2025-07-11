@@ -154,20 +154,15 @@ open class KtViewCreateFactory(@NotNull resIdBeans: MutableList<ResBean>, @NotNu
 
     override fun generateFields() {
         try {
-            //最后一个成员变量
-            val p = ktClass.getProperties().lastOrNull()
-            //所有成员变量
-            val oldFiled = ktClass.getProperties().map { it.name }
-            //左括号
-            val e = p ?: ktBody.lBrace
+            val oldField = ktClass.getProperties().map { it.name }
             for (resBean in resBeans) {
-                if (resBean.isChecked && !oldFiled.contains(resBean.fieldName)) {
+                if (resBean.isChecked && !oldField.contains(resBean.fieldName)) {
                     val field = if (Config.get().isKotlinLazy && mIsActivity) {
                         ktFactory.createProperty(resBean.getKotlinLazyProperty(""))
                     } else {
                         ktFactory.createProperty(resBean.kotlinProperty)
                     }
-                    ktBody.addBefore(ktFactory.createNewLine(), ktBody.addAfter(field, e))
+                    ktBody.add(field)
                 }
             }
         } catch (t: Throwable) {

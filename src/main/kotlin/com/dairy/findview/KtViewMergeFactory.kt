@@ -1,7 +1,14 @@
 package com.dairy.findview
 
 import com.intellij.openapi.ui.MessageType
+import com.intellij.psi.JavaRecursiveElementVisitor
+import com.intellij.psi.PsiAnnotation
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiField
 import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiReferenceExpression
+import com.intellij.psi.util.InheritanceUtil
+import com.intellij.psi.util.PsiTreeUtil
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.kotlin.psi.*
 
@@ -16,10 +23,38 @@ class KtViewMergeFactory(
 ) : KtViewCreateFactory(resIdBeans, files, ktClass) {
 
     private val propertyMap = HashMap<String, String>()
+//    private val
 
     override fun executeBefore() {
         resBeans.forEach {
             propertyMap[it.fieldName] = it.getFieldName(2)
+        }
+    }
+
+    private fun processAllButterknifeProperties() {
+        val activityClasses = PsiTreeUtil.findChildrenOfType(psiFile, PsiClass::class.java).filter {
+            InheritanceUtil.isInheritor(it, "android.app.Activity")
+        }
+        activityClasses.forEach { activityClass ->
+            val butterknifeProps = activityClass.fields.filter {
+                val modList = it.modifierList ?: return@filter false
+                modList.hasAnnotation("butterknife.BindView")
+            }
+            butterknifeProps.forEach {
+                val butterknifeAnnotation = it.getAnnotation("butterknife.BindView") as PsiAnnotation
+                val resId = butterknifeAnnotation.parameterList.firstChild.text
+                val resBean = resBeans.find { it.id == resId } as ResBean
+                val references = mutableListOf<PsiReferenceExpression>()
+                activityClass.accept(object : JavaRecursiveElementVisitor() {
+                    override fun visitReferenceExpression(expression: PsiReferenceExpression) {
+                        super.visitReferenceExpression(expression)
+                        if(expression.resolve() == it) references.add(expression)
+                    }
+                })
+                val replacementExpression = ktFactory.createExpression("binding.${propertyMap[resBean.fieldName]}")
+                references.forEach { it.replace(replacementExpression) }
+                it.delete()
+            }
         }
     }
 
@@ -293,6 +328,7 @@ class KtViewMergeFactory(
                         it.mergePropertyName()
                     }
                 }
+            processAllButterknifeProperties()
         } catch (t: Throwable) {
             t.printStackTrace()
             Utils.showNotification(ktClass.project, MessageType.ERROR, t.message)
@@ -378,11 +414,9 @@ class KtViewMergeFactory(
                     replaceFindById()
                 }
             }
-        } else if (text.contains("@BindView")
-            || text.contains("ButterKnife.")
+        }else if (text.contains("ButterKnife.")
             || text.contains("UnBinder.")
         ) {
-            //删除 ButterKnife
             delete()
         } else {
             replacePropertyName()
@@ -436,22 +470,22 @@ class KtViewMergeFactory(
             var dot: Int
             propertyMap.keys.forEach {
                 dot = text.indexOf(it)
-                val name = propertyMap[it]
-                while (name != null) {
-                    if (dot != -1 && (text.getOrNull(dot + it.length) == '.'
-                                || text.getOrNull(dot + it.length) == ')')
-                    ) {
-                        replace = replace.replace(it, "binding.$name", false)
-                        val _dot = text.substring(dot + it.length).indexOf(it)
-                        if (_dot != -1) {
-                            dot += it.length + _dot
-                        } else {
-                            dot = _dot
-                        }
-                    } else {
-                        break
-                    }
-                }
+//                val name = propertyMap[it]
+//                while (name != null) {
+//                    if (dot != -1 && (text.getOrNull(dot + it.length) == '.'
+//                                || text.getOrNull(dot + it.length) == ')')
+//                    ) {
+//                        replace = replace.replace(it, "binding.$name", false)
+//                        val _dot = text.substring(dot + it.length).indexOf(it)
+//                        if (_dot != -1) {
+//                            dot += it.length + _dot
+//                        } else {
+//                            dot = _dot
+//                        }
+//                    } else {
+//                        break
+//                    }
+//                }
             }
             replace(ktFactory.createExpression(replace))
         }

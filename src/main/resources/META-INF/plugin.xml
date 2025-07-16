@@ -15,25 +15,25 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
     </extensions>
-    <depends>org.jetbrains.plugins.gradle</depends>
-    <depends>org.jetbrains.android</depends>
+<!--    <depends>org.jetbrains.plugins.gradle</depends>-->
+<!--    <depends>org.jetbrains.android</depends>-->
     <depends>org.jetbrains.kotlin</depends>
     <depends>com.intellij.modules.java</depends>
 
     <actions>
         <!-- Add your actions here -->
-        <action id="findviews" class="com.dairy.findview.FindViewsAction" text="FindViewById"
-                description="find view by id">
+        <action id="findviews" class="com.dairy.findview.FindViewsAction" text="Find Views"
+                description="Find view by id">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl U"/>
         </action>
-        <action id="generateviews" class="com.dairy.findview.GenerateViewsAction" text="FindViewById"
-                description="generate code for find view by id ">
+        <action id="generateviews" class="com.dairy.findview.GenerateViewsAction" text="Generate Views"
+                description="Generate code for findViewById ">
             <add-to-group group-id="XmlGenerateToolsGroup" anchor="before" relative-to-action="GenerateDTD"/>
             <keyboard-shortcut keymap="$default" first-keystroke="meta U" second-keystroke="ctrl U"/>
         </action>
-        <action id="mergevies" class="com.dairy.findview.MergeViewAction" text="MergeView"
-                description="merge view to viewbinding">
+        <action id="mergevies" class="com.dairy.findview.MergeViewAction" text="Convert To View Binding"
+                description="Convert to viewbinding">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl M"/>
         </action>

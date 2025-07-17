@@ -9,6 +9,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.kotlin.psi.KtClass;
+import org.jetbrains.kotlin.psi.KtFile;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class ViewBindingConversionAction extends AnAction {
             MergeDialog dialog = new MergeDialog(resBeans);
             dialog.setClickListener(kotlin -> {
                 BaseViewCreateFactory factory;
-                if (kotlin) {
+                if (psiFile instanceof KtFile) {
                     KtClass ktClass = Utils.getPsiClassFromEvent(editor);
                     factory = new KtViewMergeFactory(resBeans, psiFile, layoutFile, ktClass);
                 } else {

@@ -166,7 +166,7 @@ open class KtViewCreateFactory(@NotNull resIdBeans: MutableList<ResBean>, @NotNu
                 }
             }
         } catch (t: Throwable) {
-            //Utils.showNotification(ktClass.project, MessageType.ERROR, t.message)
+            Utils.showNotification(ktClass.project, MessageType.ERROR, t.message)
         }
 
     }

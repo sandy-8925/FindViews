@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.psi.KtClass;
 
 import java.util.List;
 
-public class MergeViewAction extends AnAction {
+public class ViewBindingConversionAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         try {

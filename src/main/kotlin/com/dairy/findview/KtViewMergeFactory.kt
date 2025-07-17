@@ -23,15 +23,24 @@ class KtViewMergeFactory(
 ) : KtViewCreateFactory(resIdBeans, files, ktClass) {
 
     private val propertyMap = HashMap<String, String>()
+    private val idMap = mutableMapOf<String, ResBean>()
 //    private val
 
     override fun executeBefore() {
         resBeans.forEach {
             propertyMap[it.fieldName] = it.getFieldName(2)
         }
+        resBeans.forEach { idMap[it.id] = it }
+    }
+
+    override fun executeLast() {
+        super.executeLast()
+        propertyMap.clear()
+        idMap.clear()
     }
 
     private fun processAllButterknifeProperties() {
+        Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties() invoked")
         val activityClasses = PsiTreeUtil.findChildrenOfType(psiFile, PsiClass::class.java).filter {
             InheritanceUtil.isInheritor(it, "android.app.Activity")
         }

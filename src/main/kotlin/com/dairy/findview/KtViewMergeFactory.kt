@@ -44,12 +44,16 @@ class KtViewMergeFactory(
         val activityClasses = PsiTreeUtil.findChildrenOfType(psiFile, PsiClass::class.java).filter {
             InheritanceUtil.isInheritor(it, "android.app.Activity")
         }
+        Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): activityClasses.size = ${activityClasses.size}")
         activityClasses.forEach { activityClass ->
+            Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): activityClass = ${activityClass.name}")
             val butterknifeProps = activityClass.fields.filter {
                 val modList = it.modifierList ?: return@filter false
                 modList.hasAnnotation("butterknife.BindView")
             }
+            Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): ${activityClass.name}.butterknifeProps.size = ${butterknifeProps.size}")
             butterknifeProps.forEach {
+                Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknife field found = ${it.name}")
                 val butterknifeAnnotation = it.getAnnotation("butterknife.BindView") as PsiAnnotation
                 val resId = butterknifeAnnotation.parameterList.firstChild.text
                 val resBean = resBeans.find { it.id == resId } as ResBean

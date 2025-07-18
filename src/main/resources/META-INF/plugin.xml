@@ -35,7 +35,7 @@
         <action id="convertviewbinding" class="com.dairy.findview.ViewBindingConversionAction" text="Convert To View Binding"
                 description="Convert to viewbinding">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl V B"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl M"/>
         </action>
     </actions>
 

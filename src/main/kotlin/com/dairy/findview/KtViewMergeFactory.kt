@@ -233,7 +233,10 @@ class KtViewMergeFactory(
     }
 
     override fun generateFields() {
+        Utils.showNotification(psiFile.project, MessageType.INFO, "generateFields() invoked")
         try {
+            processAllButterknifeProperties()
+
             //添加binding
             val binding = Utils.getViewBinding(layoutFile)
             val bindingString = "$binding.inflate(LayoutInflater.from(this))"
@@ -274,6 +277,7 @@ class KtViewMergeFactory(
     }
 
     override fun generateFindViewById() {
+        Utils.showNotification(psiFile.project, MessageType.INFO, "generateFindViewById() invoked")
         try {
             //view替换为binding
             if (mIsActivity) {
@@ -327,6 +331,7 @@ class KtViewMergeFactory(
     }
 
     override fun performFunction() {
+        Utils.showNotification(psiFile.project, MessageType.INFO, "performFunction() invoked")
         try {
             //替换属性为binding
             ktClass.declarations.filterIsInstance<KtFunction>()
@@ -337,7 +342,6 @@ class KtViewMergeFactory(
                         it.mergePropertyName()
                     }
                 }
-            processAllButterknifeProperties()
         } catch (t: Throwable) {
             t.printStackTrace()
             Utils.showNotification(ktClass.project, MessageType.ERROR, t.message)

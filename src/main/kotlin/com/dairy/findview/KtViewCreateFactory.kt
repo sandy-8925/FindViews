@@ -14,17 +14,17 @@ open class KtViewCreateFactory(@NotNull resIdBeans: MutableList<ResBean>, @NotNu
 
     private val mRunnable = Runnable {
         try {
-            if (Utils.isKotlinAdapter(psiFile, ktClass) || isAdapterType) {
-                //适配器
-                generateAdapter()
-            } else {
+//            if (Utils.isKotlinAdapter(psiFile, ktClass) || isAdapterType) {
+//                //适配器
+//                generateAdapter()
+//            } else {
                 //生成成员变量
                 generateFields()
                 //生成方法
                 generateFindViewById()
                 //调用方法
                 performFunction()
-            }
+//            }
         } catch (t: Throwable) {
             Utils.showNotification(ktClass.project, MessageType.ERROR, t.message)
         }

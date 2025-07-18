@@ -14,6 +14,11 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <notificationGroup
+            id="findview_notif_group_id"
+            displayType="TOOL_WINDOW"
+            isLogByDefault="true"
+            toolWindowId="Notifications"/>
     </extensions>
 <!--    <depends>org.jetbrains.plugins.gradle</depends>-->
 <!--    <depends>org.jetbrains.android</depends>-->

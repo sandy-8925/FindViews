@@ -1,6 +1,7 @@
 package com.dairy.findview;
 
 import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.components.ServiceManager;
@@ -331,25 +332,13 @@ public class Utils {
         return name != null && name.contains("Adapter");
     }
 
-    private static final String NOTIF_GROUP_ID = "notif_group_id";
+    private static final String NOTIF_GROUP_ID = "findview_notif_group_id";
 
     public static void showNotification(@NotNull Project project, MessageType messageType, String text) {
-        NotificationType notifType = getNotifType(messageType);
-
-        Notification notification = new Notification(
-                NOTIF_GROUP_ID,
-                "",
-                text,
-                notifType
-        );
-        Notifications.Bus.notify(notification);
-//        StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
-//
-//        JBPopupFactory.getInstance()
-//                .createHtmlTextBalloonBuilder(text, messageType, null)
-//                .setFadeoutTime(7500)
-//                .createBalloon()
-//                .show(RelativePoint.getCenterOf(statusBar.getComponent()), Balloon.Position.atRight);
+        NotificationGroupManager.getInstance()
+                .getNotificationGroup(NOTIF_GROUP_ID)
+                .createNotification(text, messageType)
+                .notify(project);
     }
 
     private static NotificationType getNotifType(MessageType messageType) {

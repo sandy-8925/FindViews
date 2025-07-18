@@ -240,7 +240,7 @@ class KtViewMergeFactory(
             var bindingExist = false
             //删掉属性
             ktClass.getProperties().forEach {
-                if (propertyMap[it.name] != null || it.name == "mRootView" || it.typeReference?.text == "Unbinder") {
+                if (it.name in propertyMap || it.name == "mRootView" || it.typeReference?.text == "Unbinder") {
                     it.delete()
                 } else {
                     if (!bindingExist) {

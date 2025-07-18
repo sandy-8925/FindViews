@@ -1,5 +1,8 @@
 package com.dairy.findview;
 
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Editor;
@@ -328,13 +331,36 @@ public class Utils {
         return name != null && name.contains("Adapter");
     }
 
-    public static void showNotification(@NotNull Project project, MessageType type, String text) {
-        StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
+    private static final String NOTIF_GROUP_ID = "notif_group_id";
 
-        JBPopupFactory.getInstance()
-                .createHtmlTextBalloonBuilder(text, type, null)
-                .setFadeoutTime(7500)
-                .createBalloon()
-                .show(RelativePoint.getCenterOf(statusBar.getComponent()), Balloon.Position.atRight);
+    public static void showNotification(@NotNull Project project, MessageType messageType, String text) {
+        NotificationType notifType = getNotifType(messageType);
+
+        Notification notification = new Notification(
+                NOTIF_GROUP_ID,
+                "",
+                text,
+                notifType
+        );
+        Notifications.Bus.notify(notification);
+//        StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
+//
+//        JBPopupFactory.getInstance()
+//                .createHtmlTextBalloonBuilder(text, messageType, null)
+//                .setFadeoutTime(7500)
+//                .createBalloon()
+//                .show(RelativePoint.getCenterOf(statusBar.getComponent()), Balloon.Position.atRight);
+    }
+
+    private static NotificationType getNotifType(MessageType messageType) {
+        NotificationType notifType = NotificationType.INFORMATION;
+        if(messageType == MessageType.ERROR) {
+            notifType = NotificationType.ERROR;
+        } else if (messageType == MessageType.INFO) {
+            notifType = NotificationType.INFORMATION;
+        } else if(messageType == MessageType.WARNING) {
+            notifType = NotificationType.WARNING;
+        }
+        return notifType;
     }
 }

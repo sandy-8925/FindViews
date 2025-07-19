@@ -9,6 +9,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.util.InheritanceUtil
 import com.intellij.psi.util.PsiTreeUtil
+import org.apache.commons.lang3.StringUtils
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.kotlin.psi.*
 
@@ -41,21 +42,20 @@ class KtViewMergeFactory(
 
     private fun processAllButterknifeProperties() {
         Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties() invoked")
-        val activityClasses = PsiTreeUtil.findChildrenOfType(psiFile, PsiClass::class.java).filter {
-            InheritanceUtil.isInheritor(it, "android.app.Activity")
-        }
-        Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): activityClasses.size = ${activityClasses.size}")
-        activityClasses.forEach { activityClass ->
+//        val activityClasses = PsiTreeUtil.findChildrenOfType(psiFile, PsiClass::class.java).filter {
+//            InheritanceUtil.isInheritor(it, "android.app.Activity")
+//        }
+//        Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): activityClasses.size = ${activityClasses.size}")
+        listOf(ktClass).forEach { activityClass ->
             Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): activityClass = ${activityClass.name}")
-            val butterknifeProps = activityClass.fields.filter {
-                val modList = it.modifierList ?: return@filter false
-                modList.hasAnnotation("butterknife.BindView")
+            val butterknifeProps = activityClass.getProperties().filter {
+                it.annotationEntries.find { it.text.contains("BindView") } != null
             }
             Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): ${activityClass.name}.butterknifeProps.size = ${butterknifeProps.size}")
             butterknifeProps.forEach {
                 Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknife field found = ${it.name}")
-                val butterknifeAnnotation = it.getAnnotation("butterknife.BindView") as PsiAnnotation
-                val resId = butterknifeAnnotation.parameterList.firstChild.text
+                val butterknifeAnnotation = it.annotationEntries.find { it.text.contains("BindView") } as KtAnnotationEntry
+                val resId = butterknifeAnnotation.valueArguments.find { "id" == it.getArgumentName()?.asName?.asString() }?.getArgumentExpression()?.text // parameterList.firstChild.text
                 val resBean = resBeans.find { it.id == resId } as ResBean
                 val references = mutableListOf<PsiReferenceExpression>()
                 activityClass.accept(object : JavaRecursiveElementVisitor() {

@@ -46,20 +46,23 @@ class KtViewMergeFactory(
                 it.annotationEntries.find { it.text.contains("BindView") } != null
             }
             Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): ${activityClass.name}.butterknifeProps.size = ${butterknifeProps.size}")
-            butterknifeProps.forEach {
+            butterknifeProps.forEach btKnifePropLoop@{
                 Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknife field found = ${it.name}")
-                val butterknifeAnnotationEntry = it.annotationEntries.find { it.text.contains("BindView") } as KtAnnotationEntry
+                val butterknifeAnnotationEntry = it.annotationEntries.find { it.text.contains("BindView") }
+                butterknifeAnnotationEntry ?: return@btKnifePropLoop
 //                Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknifeAnnotationEntry found = ${butterknifeAnnotationEntry.text}")
 //                butterknifeAnnotationEntry.valueArguments.forEachIndexed { index, valueArgument ->
 //                    val argName = valueArgument.getArgumentName()?.asName?.asString()
 //                    Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknifeAnnotationEntry.valueArgument[$index] = $argName")
 //                }
                 val resId = butterknifeAnnotationEntry.valueArguments.find { "value" == it.getArgumentName()?.asName?.asString() } ?: butterknifeAnnotationEntry.valueArguments.first().getArgumentExpression()?.text
+                resId ?: return@btKnifePropLoop
 //                Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknifeAnnotationEntry.resId = $resId")
 //                resBeans.forEachIndexed { index, resBean ->
 //                    Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): resBeans[$index].fullId = ${resBean.fullId}")
 //                }
-                val resBean = resBeans.find { it.fullId == resId } as ResBean
+                val resBean = resBeans.find { it.fullId == resId }
+                resBean ?: return@btKnifePropLoop
 
                 val references = mutableListOf<PsiReferenceExpression>()
                 activityClass.accept(object : JavaRecursiveElementVisitor() {

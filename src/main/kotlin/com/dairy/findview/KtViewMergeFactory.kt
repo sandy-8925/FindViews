@@ -2,14 +2,8 @@ package com.dairy.findview
 
 import com.intellij.openapi.ui.MessageType
 import com.intellij.psi.JavaRecursiveElementVisitor
-import com.intellij.psi.PsiAnnotation
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiField
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiReferenceExpression
-import com.intellij.psi.util.InheritanceUtil
-import com.intellij.psi.util.PsiTreeUtil
-import org.apache.commons.lang3.StringUtils
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.kotlin.psi.*
 
@@ -54,9 +48,19 @@ class KtViewMergeFactory(
             Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): ${activityClass.name}.butterknifeProps.size = ${butterknifeProps.size}")
             butterknifeProps.forEach {
                 Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknife field found = ${it.name}")
-                val butterknifeAnnotation = it.annotationEntries.find { it.text.contains("BindView") } as KtAnnotationEntry
-                val resId = butterknifeAnnotation.valueArguments.find { "id" == it.getArgumentName()?.asName?.asString() }?.getArgumentExpression()?.text // parameterList.firstChild.text
-                val resBean = resBeans.find { it.id == resId } as ResBean
+                val butterknifeAnnotationEntry = it.annotationEntries.find { it.text.contains("BindView") } as KtAnnotationEntry
+//                Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknifeAnnotationEntry found = ${butterknifeAnnotationEntry.text}")
+//                butterknifeAnnotationEntry.valueArguments.forEachIndexed { index, valueArgument ->
+//                    val argName = valueArgument.getArgumentName()?.asName?.asString()
+//                    Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknifeAnnotationEntry.valueArgument[$index] = $argName")
+//                }
+                val resId = butterknifeAnnotationEntry.valueArguments.find { "value" == it.getArgumentName()?.asName?.asString() } ?: butterknifeAnnotationEntry.valueArguments.first().getArgumentExpression()?.text
+//                Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknifeAnnotationEntry.resId = $resId")
+//                resBeans.forEachIndexed { index, resBean ->
+//                    Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): resBeans[$index].fullId = ${resBean.fullId}")
+//                }
+                val resBean = resBeans.find { it.fullId == resId } as ResBean
+
                 val references = mutableListOf<PsiReferenceExpression>()
                 activityClass.accept(object : JavaRecursiveElementVisitor() {
                     override fun visitReferenceExpression(expression: PsiReferenceExpression) {

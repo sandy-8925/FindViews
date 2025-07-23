@@ -54,7 +54,7 @@ public class MergeDialog extends JDialog {
         typeComboBox.addItem("aa_bb_cc");
         typeComboBox.addItem("aaBbCc");
         typeComboBox.addItem("mAaBbCc");
-        typeComboBox.setSelectedItem("mAaBbCc");
+        typeComboBox.setSelectedItem("aaBbCc");
         typeComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {

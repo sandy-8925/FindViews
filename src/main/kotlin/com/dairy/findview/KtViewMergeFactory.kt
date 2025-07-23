@@ -4,6 +4,8 @@ import com.intellij.openapi.ui.MessageType
 import com.intellij.psi.JavaRecursiveElementVisitor
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiReferenceExpression
+import com.intellij.psi.search.SearchScope
+import com.intellij.psi.search.searches.ReferencesSearch
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.kotlin.psi.*
 
@@ -64,15 +66,9 @@ class KtViewMergeFactory(
                 val resBean = resBeans.find { it.fullId == resId }
                 resBean ?: return@btKnifePropLoop
 
-                val references = mutableListOf<PsiReferenceExpression>()
-                activityClass.accept(object : JavaRecursiveElementVisitor() {
-                    override fun visitReferenceExpression(expression: PsiReferenceExpression) {
-                        super.visitReferenceExpression(expression)
-                        if(expression.resolve() == it) references.add(expression)
-                    }
-                })
                 val replacementExpression = ktFactory.createExpression("binding.${propertyMap[resBean.fieldName]}")
-                references.forEach { it.replace(replacementExpression) }
+                ReferencesSearch.search(it).forEach { it.element.replace(replacementExpression) }
+
                 it.delete()
             }
         }

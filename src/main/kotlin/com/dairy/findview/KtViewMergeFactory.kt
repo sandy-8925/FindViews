@@ -43,13 +43,13 @@ class KtViewMergeFactory(
 //        }
 //        Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): activityClasses.size = ${activityClasses.size}")
         listOf(ktClass).forEach { activityClass ->
-            Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): activityClass = ${activityClass.name}")
+//            Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): activityClass = ${activityClass.name}")
             val butterknifeProps = activityClass.getProperties().filter {
                 it.annotationEntries.find { it.text.contains("BindView") } != null
             }
             Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): ${activityClass.name}.butterknifeProps.size = ${butterknifeProps.size}")
             butterknifeProps.forEach btKnifePropLoop@{
-                Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknife field found = ${it.name}")
+//                Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknife field found = ${it.name}")
                 val butterknifeAnnotationEntry = it.annotationEntries.find { it.text.contains("BindView") }
                 butterknifeAnnotationEntry ?: return@btKnifePropLoop
 //                Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): butterknifeAnnotationEntry found = ${butterknifeAnnotationEntry.text}")

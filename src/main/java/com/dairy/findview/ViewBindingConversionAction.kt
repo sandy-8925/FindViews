@@ -18,7 +18,7 @@ class ViewBindingConversionAction : AnAction() {
             dialog.setClickListener {
                 val factory: BaseViewCreateFactory
                 if (psiFile is KtFile) {
-                    val ktClass = Utils.getPsiClassFromEvent(editor)
+                    val ktClass = Utils.getKtClassFromEvent(editor)
                     factory = KtViewMergeFactory(resBeans, psiFile, layoutFile, ktClass)
                 } else {
                     val psiClass = Utils.getTargetClass(editor, psiFile)

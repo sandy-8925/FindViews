@@ -27,7 +27,7 @@ class KtViewMergeFactory(
         resBeans.forEach {
             propertyMap[it.fieldName] = it.getFieldName(2)
         }
-        resBeans.forEach { idMap[it.id] = it }
+        resBeans.forEach { idMap[it.fullId] = it }
     }
 
     override fun executeLast() {
@@ -63,7 +63,7 @@ class KtViewMergeFactory(
 //                resBeans.forEachIndexed { index, resBean ->
 //                    Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): resBeans[$index].fullId = ${resBean.fullId}")
 //                }
-                val resBean = resBeans.find { it.fullId == resId }
+                val resBean = idMap[resId]
                 resBean ?: return@btKnifePropLoop
 
                 val replacementExpression = ktFactory.createExpression("binding.${propertyMap[resBean.fieldName]}")

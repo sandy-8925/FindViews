@@ -50,7 +50,9 @@ class KtViewMergeFactory(
             butterknifeProps.forEach btKnifePropLoop@{
                 val butterknifeAnnotationEntry = it.annotationEntries.find { it.text.contains("BindView") }
                 butterknifeAnnotationEntry ?: return@btKnifePropLoop
-                val resId = butterknifeAnnotationEntry.valueArguments.find { "value" == it.getArgumentName()?.asName?.asString() } ?: butterknifeAnnotationEntry.valueArguments.first().getArgumentExpression()?.text
+                val valueArgument = butterknifeAnnotationEntry.valueArguments.find { "value" == it.getArgumentName()?.asName?.asString() }
+                        ?: butterknifeAnnotationEntry.valueArguments.first()
+                val resId = valueArgument.getArgumentExpression()?.text
                 resId ?: return@btKnifePropLoop
                 val resBean = idMap[resId]
                 resBean ?: return@btKnifePropLoop

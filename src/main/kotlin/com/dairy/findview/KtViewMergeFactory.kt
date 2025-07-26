@@ -1,10 +1,7 @@
 package com.dairy.findview
 
 import com.intellij.openapi.ui.MessageType
-import com.intellij.psi.JavaRecursiveElementVisitor
 import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiReferenceExpression
-import com.intellij.psi.search.SearchScope
 import com.intellij.psi.search.searches.ReferencesSearch
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.kotlin.psi.*
@@ -42,26 +39,25 @@ class KtViewMergeFactory(
 //            InheritanceUtil.isInheritor(it, "android.app.Activity")
 //        }
 //        Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): activityClasses.size = ${activityClasses.size}")
-        listOf(ktClass).forEach { activityClass ->
-            val butterknifeProps = activityClass.getProperties().filter {
-                it.annotationEntries.find { it.text.contains("BindView") } != null
-            }
-            Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): ${activityClass.name}.butterknifeProps.size = ${butterknifeProps.size}")
-            butterknifeProps.forEach btKnifePropLoop@{
-                val butterknifeAnnotationEntry = it.annotationEntries.find { it.text.contains("BindView") }
-                butterknifeAnnotationEntry ?: return@btKnifePropLoop
-                val valueArgument = butterknifeAnnotationEntry.valueArguments.find { "value" == it.getArgumentName()?.asName?.asString() }
+        val butterknifeProps = ktClass.getProperties().filter {
+            it.annotationEntries.find { it.text.contains("BindView") } != null
+        }
+        Utils.showNotification(psiFile.project, MessageType.INFO,
+            "processAllButterknifeProperties(): ${ktClass.name}.butterknifeProps.size = ${butterknifeProps.size}")
+        butterknifeProps.forEach btKnifePropLoop@{
+            val butterknifeAnnotationEntry = it.annotationEntries.find { it.text.contains("BindView") }
+            butterknifeAnnotationEntry ?: return@btKnifePropLoop
+            val valueArgument = butterknifeAnnotationEntry.valueArguments.find { "value" == it.getArgumentName()?.asName?.asString() }
                         ?: butterknifeAnnotationEntry.valueArguments.first()
-                val resId = valueArgument.getArgumentExpression()?.text
-                resId ?: return@btKnifePropLoop
-                val resBean = idMap[resId]
-                resBean ?: return@btKnifePropLoop
+            val resId = valueArgument.getArgumentExpression()?.text
+            resId ?: return@btKnifePropLoop
+            val resBean = idMap[resId]
+            resBean ?: return@btKnifePropLoop
 
-                val replacementExpression = ktFactory.createExpression("binding.${propertyMap[resBean.fieldName]}")
-                ReferencesSearch.search(it).forEach { it.element.replace(replacementExpression) }
+            val replacementExpression = ktFactory.createExpression("binding.${propertyMap[resBean.fieldName]}")
+            ReferencesSearch.search(it).forEach { it.element.replace(replacementExpression) }
 
-                it.delete()
-            }
+            it.delete()
         }
     }
 

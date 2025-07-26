@@ -2,6 +2,7 @@ package com.dairy.findview
 
 import com.intellij.openapi.ui.MessageType
 import com.intellij.psi.PsiFile
+import com.intellij.psi.search.LocalSearchScope
 import com.intellij.psi.search.searches.ReferencesSearch
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.kotlin.psi.*
@@ -55,7 +56,7 @@ class KtViewMergeFactory(
             resBean ?: return@btKnifePropLoop
 
             val replacementExpression = ktFactory.createExpression("binding.${propertyMap[resBean.fieldName]}")
-            ReferencesSearch.search(it).forEach { it.element.replace(replacementExpression) }
+            ReferencesSearch.search(it, LocalSearchScope(ktClass)).forEach { it.element.replace(replacementExpression) }
 
             it.delete()
         }

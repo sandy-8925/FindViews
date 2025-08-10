@@ -54,7 +54,6 @@ public class MergeDialog extends JDialog {
         typeComboBox.addItem("aa_bb_cc");
         typeComboBox.addItem("aaBbCc");
         typeComboBox.addItem("mAaBbCc");
-        typeComboBox.setSelectedItem("aaBbCc");
         typeComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -66,6 +65,7 @@ public class MergeDialog extends JDialog {
                 tableModel.fireTableDataChanged();
             }
         });
+        typeComboBox.setSelectedIndex(1);
 
         kotlinCheckBox.setSelected(Config.get().getFileType() == FileType.KOTLIN);
 

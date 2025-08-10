@@ -42,6 +42,9 @@
             <add-to-group group-id="GenerateGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl M"/>
         </action>
+        <action id="testaction" class="com.dairy.findview.TestAction" text="FindViews Test Action" description="Used to test IntelliJ plugin code">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
     </actions>
 
 </idea-plugin>

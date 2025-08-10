@@ -36,10 +36,6 @@ class KtViewMergeFactory(
 
     private fun processAllButterknifeProperties() {
         Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties() invoked")
-//        val activityClasses = PsiTreeUtil.findChildrenOfType(psiFile, PsiClass::class.java).filter {
-//            InheritanceUtil.isInheritor(it, "android.app.Activity")
-//        }
-//        Utils.showNotification(psiFile.project, MessageType.INFO, "processAllButterknifeProperties(): activityClasses.size = ${activityClasses.size}")
         val butterknifeProps = ktClass.getProperties().filter {
             it.annotationEntries.find { it.text.contains("BindView") } != null
         }

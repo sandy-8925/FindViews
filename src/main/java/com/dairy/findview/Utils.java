@@ -131,13 +131,13 @@ public class Utils {
     public static PsiFile getFileFromElement(PsiElement element) {
         if (element != null) {
             //java
-            PsiFile file = getFileParent(element, element.getParent());
+            PsiFile file = getLayoutFile(element, element.getParent());
             if (file != null) {
                 Config.get().setFileType(FileType.JAVA);
                 return file;
             }
             //kotlin
-            file = getFileParent(element, element.getParent().getParent());
+            file = getLayoutFile(element, element.getParent().getParent());
             if (file != null) {
                 Config.get().setFileType(FileType.KOTLIN);
                 return file;
@@ -146,7 +146,7 @@ public class Utils {
         return null;
     }
 
-    private static PsiFile getFileParent(PsiElement element, PsiElement parent) {
+    public static PsiFile getLayoutFile(PsiElement element, PsiElement parent) {
         if (element != null && parent != null) {
             String path = parent.getText();
             if (path.startsWith("R.layout.") || path.startsWith("android.R.layout")) {

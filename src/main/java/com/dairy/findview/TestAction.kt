@@ -27,9 +27,10 @@ class TestAction: AnAction() {
             val psiFile = e.getData(CommonDataKeys.PSI_FILE)
             psiFile ?: return
             psiProject = psiFile.project
-            findActivityClasses(psiFile)
+            val layoutFile = getLayoutFileRef(psiFile)
+            Utils.showNotification(psiProject, MessageType.INFO, "TestAction: layoutFile = $layoutFile")
         } catch (e: Exception) {
-            Utils.showNotification(psiProject, MessageType.ERROR, "findLayoutFile(): Exception occurred when trying to find activity classes -\n${e.printStackTrace()}")
+            Utils.showNotification(psiProject, MessageType.ERROR, "TestAction: Exception occurred -\n${e.printStackTrace()}")
         }
     }
 
@@ -52,7 +53,7 @@ class TestAction: AnAction() {
     }
 }
 
-private class JavaActivityClassFinderVisitor: JavaRecursiveElementVisitor() {
+internal class JavaActivityClassFinderVisitor: JavaRecursiveElementVisitor() {
     val activityClasses = mutableListOf<PsiClass>()
 
     override fun visitClass(aClass: PsiClass) {
@@ -63,7 +64,7 @@ private class JavaActivityClassFinderVisitor: JavaRecursiveElementVisitor() {
     }
 }
 
-private class KotlinActivityClassFinderVisitor: KotlinRecursiveElementVisitor() {
+internal class KotlinActivityClassFinderVisitor: KotlinRecursiveElementVisitor() {
     val activityClasses = mutableListOf<KtClass>()
 
     override fun visitClass(aClass: KtClass) {

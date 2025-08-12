@@ -24,8 +24,9 @@ class ViewBindingConversionAction : AnAction() {
             val psiFile = e.getData(CommonDataKeys.PSI_FILE)
             psiFile ?: return
             val editor = e.getData(CommonDataKeys.EDITOR)
-            val layoutFile = Utils.getFileFromCaret(psiFile, editor)
-            val resBeans = Utils.getResBeanFromFile(psiFile, editor)
+            val layoutFile = getLayoutFileRef(psiFile)
+            layoutFile ?: return
+            val resBeans = Utils.getResBeanFromLayoutFile(layoutFile)
             val dialog = MergeDialog(resBeans)
             dialog.setClickListener {
                 val factory: BaseViewCreateFactory

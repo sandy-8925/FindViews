@@ -58,18 +58,18 @@ public class Utils {
         final List<ResBean> resBeans = new ArrayList<>();
         PsiFile file = getFileFromCaret(psiFile, editor);
         if (file != null) {
-            return getResBeanFromFile(file, resBeans);
+            return getResBeanFromLayoutFile(file, resBeans);
         }
         return resBeans;
     }
 
-    public static List<ResBean> getResBeanFromFile(PsiFile psiFile) {
+    public static List<ResBean> getResBeanFromLayoutFile(PsiFile layoutPsiFile) {
         final List<ResBean> resBeans = new ArrayList<>();
-        return getResBeanFromFile(psiFile, resBeans);
+        return getResBeanFromLayoutFile(layoutPsiFile, resBeans);
     }
 
-    private static List<ResBean> getResBeanFromFile(@NotNull PsiFile file, List<ResBean> resBeans) {
-        file.accept(new XmlRecursiveElementVisitor() {
+    private static List<ResBean> getResBeanFromLayoutFile(@NotNull PsiFile layoutPsiFile, List<ResBean> resBeans) {
+        layoutPsiFile.accept(new XmlRecursiveElementVisitor() {
             @Override
             public void visitXmlTag(XmlTag tag) {
                 super.visitXmlTag(tag);
@@ -85,11 +85,11 @@ public class Utils {
                     if (value.startsWith("@layout/")) {
                         String[] split = value.split("/");
                         String name = split[1];
-                        PsiFile include = getFileByName(file, name);
+                        PsiFile include = getFileByName(layoutPsiFile, name);
                         if (include == null) {
                             return;
                         }
-                        getResBeanFromFile(include, resBeans);
+                        getResBeanFromLayoutFile(include, resBeans);
                     }
                 } else {
                     XmlAttribute id = tag.getAttribute("android:id");

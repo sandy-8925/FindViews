@@ -15,7 +15,7 @@ public class GenerateViewsAction extends AnAction {
         try {
             PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
             if (psiFile != null) {
-                List<ResBean> resBeans = Utils.getResBeanFromFile(psiFile);
+                List<ResBean> resBeans = Utils.getResBeanFromLayoutFile(psiFile);
                 XMLDialog dialog = new XMLDialog(resBeans, Utils.getXmlPath(psiFile));
                 dialog.setClickListener((boolean kotlin) -> {
                     BaseViewCreateFactory factory = new GenerateViewFactory(resBeans, psiFile, kotlin, dialog.getAdapterName());
